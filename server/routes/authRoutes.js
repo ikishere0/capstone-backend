@@ -1,5 +1,4 @@
-const { route } = require("../shared/shared");
-const { findUserWithToken } = require("../queries/authQuery");
+const express = require("express");
 const {
   register,
   login,
@@ -7,6 +6,9 @@ const {
   deleteUser,
   updateUser,
 } = require("../controllers/authController");
+const { findUserWithToken } = require("../queries/authQuery");
+
+const router = express.Router();
 
 const isLoggedIn = async (req, res, next) => {
   try {
@@ -17,11 +19,11 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
-route.post("/register", register);
-route.post("/login", login);
-route.get("/all_users", isLoggedIn, displayAll);
-route.delete("/:id/delete", isLoggedIn, deleteUser);
-route.put("/:id/change", isLoggedIn, updateUser);
+router.post("/register", register);
+router.post("/login", login);
+router.get("/all_users", isLoggedIn, displayAll);
+router.delete("/:id/delete", isLoggedIn, deleteUser);
+router.put("/:id/change", isLoggedIn, updateUser);
 
-module.exports = route;
+module.exports = router;
 module.exports.isLoggedIn = isLoggedIn;
