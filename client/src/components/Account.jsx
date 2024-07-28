@@ -44,7 +44,7 @@ function Account() {
     try {
       const token = sessionStorage.getItem("token");
       const response = await fetch(`${API_URL}/user/deleteAccount`, {
-        // API 경로 수정
+
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

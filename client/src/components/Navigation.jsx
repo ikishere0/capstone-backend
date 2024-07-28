@@ -23,6 +23,9 @@ function Navigations() {
         <li>
           <Link to="/account">Account</Link>
         </li>
+        <li>
+          <Link to="/weathersearch">What to wear</Link>
+        </li>
         {!isAuthenticated ? (
           <>
             <li>

@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Account from "./components/Account";
 import Navigation from "./components/Navigation";
+import WeatherSearch from "./components/WeatherSearch";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/weathersearch" element={<WeatherSearch />} />
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
