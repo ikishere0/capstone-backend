@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await prisma.user.create({
       data: {
-        firstName,
-        lastName,
+        firstName: firstname,
+        lastName: lastname,
         email,
         password: hashedPassword,
       },
@@ -102,10 +102,43 @@ const updateUser = async (req, res, next) => {
   res.send(updatedUser);
 };
 
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+    });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user profile" });
+  }
+};
+
+const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const deletedUser = await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+    res.json({ message: "Account deleted successfully", user: deletedUser });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ error: "Failed to delete account" });
+  }
+};
+
 module.exports = {
   register,
   login,
   displayAll,
   deleteUser,
   updateUser,
+  getUserProfile,
+  deleteAccount,
 };

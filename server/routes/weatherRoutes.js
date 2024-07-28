@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-
-// API 요청 옵션을 생성하는 함수
 const getOptions = (location) => ({
   method: "GET",
   url: `https://open-weather13.p.rapidapi.com/city/${location}/EN`,
@@ -12,23 +10,22 @@ const getOptions = (location) => ({
   },
 });
 
-// /weather 경로에 대한 POST 요청 핸들러
 router.post("/weather", async (req, res) => {
-  const location = req.body.location; // 요청 본문에서 location을 가져옴
+  const location = req.body.location;
 
   if (!location) {
     return res.status(400).send("Location is required");
   }
 
-  const options = getOptions(location); // 해당 location에 대한 API 요청 옵션을 생성
+  const options = getOptions(location);
 
   try {
-    const response = await axios.request(options); // API 요청
+    const response = await axios.request(options);
     console.log(response.data);
-    res.json(response.data); // 응답 데이터를 JSON 형식으로 클라이언트에 보냄
+    res.json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred"); // 에러가 발생하면 500 상태 코드와 함께 에러 메시지를 클라이언트에 보냄
+    res.status(500).send("An error occurred");
   }
 });
 

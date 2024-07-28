@@ -5,6 +5,8 @@ const {
   displayAll,
   deleteUser,
   updateUser,
+  getUserProfile,
+  deleteAccount,
 } = require("../controllers/authController");
 const { findUserWithToken } = require("../queries/authQuery");
 
@@ -24,6 +26,8 @@ router.post("/login", login);
 router.get("/all_users", isLoggedIn, displayAll);
 router.delete("/:id/delete", isLoggedIn, deleteUser);
 router.put("/:id/change", isLoggedIn, updateUser);
+router.get("/profile", isLoggedIn, getUserProfile);
+router.delete("/deleteAccount", isLoggedIn, deleteAccount);
 
 module.exports = router;
 module.exports.isLoggedIn = isLoggedIn;

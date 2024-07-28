@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { setUser } from "../slices/userSlice";
+import { setUser } from "../slices/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch("http://localhost:3000/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,9 +25,10 @@ const Login = () => {
         const data = await response.json();
         sessionStorage.setItem("token", data.token);
         dispatch(setUser(data.user));
-        navigate("/account");
+        navigate("/home");
       } else {
-        setError("Login failed");
+        const errorData = await response.json();
+        setError(errorData.message || "Login failed");
       }
     } catch (err) {
       setError("Login failed");

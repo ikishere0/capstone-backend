@@ -7,16 +7,19 @@ import {
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import Account from "./components/Account";
+import Navigation from "./components/Navigation";
 
 const App = () => {
   return (
     <Router>
-      {/* <Navigations /> */}
+      <Navigation />
       <div className="content">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/account" element={<Account />} />
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>

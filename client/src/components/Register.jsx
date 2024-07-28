@@ -25,8 +25,10 @@ const RegisterForm = () => {
     try {
       await registerUser(formData);
       setSuccessMessage("Registration successful!");
+      setError(""); 
     } catch (error) {
       setError(error.message);
+      setSuccessMessage("");
     }
   };
 
@@ -35,24 +37,12 @@ const RegisterForm = () => {
       <div className="register">
         <h2>Register</h2>
         {error && (
-          <p
-            style={{
-              color: "red",
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-            }}
-          >
+          <p style={{ color: "red", fontSize: "1.5rem", fontWeight: "bold" }}>
             {error}
           </p>
         )}
         {successMessage && (
-          <p
-            style={{
-              color: "green",
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-            }}
-          >
+          <p style={{ color: "green", fontSize: "1.5rem", fontWeight: "bold" }}>
             {successMessage}
           </p>
         )}
