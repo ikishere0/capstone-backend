@@ -5,13 +5,13 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3000;
 
 const userRoutes = require("./routes/authRoutes");
-const movieRoutes = require("./routes/movieRoutes");
+const weatherRoutes = require("./routes/weatherRoutes");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/user", userRoutes);
-app.use("/api/movies", movieRoutes);
+app.use("/api/weather", weatherRoutes);
 
 app.get("/", (req, res) => {
   res.send("Home");

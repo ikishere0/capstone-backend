@@ -7,12 +7,11 @@ import {
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
-import Navigations from "./components/Navigations";
 
 const App = () => {
   return (
     <Router>
-      <Navigations />
+      {/* <Navigations /> */}
       <div className="content">
         <Routes>
           <Route path="/login" element={<Login />} />
