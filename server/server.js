@@ -1,17 +1,28 @@
 const express = require("express");
-const app = express();
-const path = require("path");
+const fileUpload = require("express-fileupload");
 const cors = require("cors");
+const path = require("path");
+const dotenv = require("dotenv");
 const PORT = process.env.PORT || 3000;
+
+dotenv.config();
 
 const userRoutes = require("./routes/authRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
+const adminRoutes = require("./routes/admin");
+const photoRoutes = require("./routes/photos");
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
+app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/user", userRoutes);
 app.use("/api/weather", weatherRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api", photoRoutes);
 
 app.get("/", (req, res) => {
   res.send("Home");

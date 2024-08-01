@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import Account from "./components/Account";
 import Navigation from "./components/Navigation";
 import WeatherSearch from "./components/WeatherSearch";
+import AdminUpload from "./components/AdminUpload";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/weathersearch" element={<WeatherSearch />} />
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="*" element={<div>404 Not Found</div>} />
+          <Route path="/admin/upload" element={<AdminUpload />} />
         </Routes>
       </div>
     </Router>
