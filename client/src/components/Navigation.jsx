@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { clearUser } from "../slices/userSlice";
-import { useNavigate } from "react-router-dom";
 
 function Navigations() {
   const isAuthenticated = useSelector((state) => state.user.isLoggedIn);

@@ -1,14 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-const accountSlice = createSlice({
-  name: "account",
-  initialState: null,
+const initialState = {
+  isLoggedIn: false,
+  user: null,
+};
+
+export const accountSlice = createSlice({
+  name: 'account',
+  initialState,
   reducers: {
-    setAccount(state, action) {
-      return action.payload;
+    setAccount: (state, action) => {
+      state.isLoggedIn = true;
+      state.user = action.payload;
+    },
+    clearAccount: (state) => {
+      state.isLoggedIn = false;
+      state.user = null;
     },
   },
 });
 
-export const { setAccount } = accountSlice.actions;
+export const { setAccount, clearAccount } = accountSlice.actions;
+
 export default accountSlice.reducer;

@@ -25,9 +25,9 @@ const RegisterForm = () => {
     try {
       await registerUser(formData);
       setSuccessMessage("Registration successful!");
-      setError(""); 
+      setError("");
     } catch (error) {
-      setError(error.message);
+      setError(error.response.data.message || "Registration failed");
       setSuccessMessage("");
     }
   };
@@ -54,6 +54,7 @@ const RegisterForm = () => {
               name="firstname"
               value={formData.firstname}
               onChange={handleChange}
+              required
             />
           </div>
           <div>
@@ -63,6 +64,7 @@ const RegisterForm = () => {
               name="lastname"
               value={formData.lastname}
               onChange={handleChange}
+              required
             />
           </div>
           <div>
@@ -72,6 +74,7 @@ const RegisterForm = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </div>
           <div>
@@ -81,6 +84,7 @@ const RegisterForm = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
           </div>
           <button type="submit">Register</button>

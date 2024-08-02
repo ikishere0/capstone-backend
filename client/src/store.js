@@ -1,8 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./slices";
+import userReducer from "./slices/userSlice";
+import accountReducer from "./slices/accountSlice";
+import likedPhotosReducer from "./slices/likedPhotosSlice";
 
-const store = configureStore({
-  reducer: rootReducer,
+export const store = configureStore({
+  reducer: {
+    user: userReducer,
+    account: accountReducer,
+    likedPhotos: likedPhotosReducer,
+  },
 });
 
 export default store;

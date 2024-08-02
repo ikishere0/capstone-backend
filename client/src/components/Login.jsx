@@ -21,17 +21,16 @@ const Login = () => {
         },
         body: JSON.stringify({ email, password }),
       });
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         sessionStorage.setItem("token", data.token);
         dispatch(setUser(data.user));
-        navigate("/home");
+        navigate("/account");
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Login failed");
+        throw new Error(data.message || "Login failed");
       }
     } catch (err) {
-      setError("Login failed");
+      setError(err.message);
     }
   };
 
@@ -40,13 +39,7 @@ const Login = () => {
       <div className="login">
         <h2>Login</h2>
         {error && (
-          <p
-            style={{
-              color: "red",
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-            }}
-          >
+          <p style={{ color: "red", fontSize: "1.5rem", fontWeight: "bold" }}>
             {error}
           </p>
         )}
@@ -57,6 +50,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </label>
           <label>
@@ -65,6 +59,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </label>
           <button type="submit">Login</button>

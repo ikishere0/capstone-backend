@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
-const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || "1234";
 
 const register = async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
@@ -18,15 +18,7 @@ const register = async (req, res) => {
       },
     });
 
-    const token = jwt.sign(
-      {
-        id: newUser.id,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
-    );
+    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: "1h" });
 
     res.status(201).json({
       success: true,
@@ -38,107 +30,65 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Registration failed",
-      error: error.message,
-    });
+    res.status(500).json({ error: "Registration failed" });
   }
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await prisma.user.findUnique({ where: { email: email } });
+    const user = await prisma.user.findUnique({ where: { email } });
+
     if (!user) {
-      return res.status(401).json({ message: "Invalid login credentials." });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    console.log("User Password from DB:", user.password);
-    console.log("Provided Password:", password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(401).json({ message: "Invalid login credentials." });
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const token = jwt.sign(
-      {
-        id: user.id,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
-    );
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "1h" });
 
-    res.json({
-      token: token,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    });
+    res.json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal server error.");
+    res.status(500).json({ error: "Internal server error" });
   }
-};
-
-const displayAll = async (req, res, next) => {
-  const users = await getAllUser();
-  res.send(users);
-};
-
-const deleteUser = async (req, res, next) => {
-  const userId = req.params.id;
-  const delUser = await destroyUser(userId);
-  res.send(delUser);
-};
-
-const updateUser = async (req, res, next) => {
-  const userId = req.params.id;
-  const userDetails = req.body;
-  const updatedUser = await alterUser(userId, userDetails);
-  res.send(updatedUser);
 };
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: req.user.id,
-      },
-    });
+    const user = await prisma.user.findUnique({ where: { id: req.user.userId } });
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
     res.json(user);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Failed to fetch user profile" });
   }
 };
 
-const deleteAccount = async (req, res) => {
+const deleteUser = async (req, res) => {
+  const userId = req.params.id;
   try {
-    const userId = req.user.id;
     const deletedUser = await prisma.user.delete({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
     });
-    res.json({ message: "Account deleted successfully", user: deletedUser });
+    res.json(deletedUser);
   } catch (error) {
-    console.error("Error deleting account:", error);
-    res.status(500).json({ error: "Failed to delete account" });
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Failed to delete user" });
   }
 };
 
 module.exports = {
   register,
   login,
-  displayAll,
-  deleteUser,
-  updateUser,
   getUserProfile,
-  deleteAccount,
+  deleteUser,
 };
