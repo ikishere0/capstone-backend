@@ -102,8 +102,12 @@ const WeatherSearch = () => {
     }
     try {
       const token = sessionStorage.getItem("token");
+      const isAlreadyLiked = likedPhotos.some(
+        (likedPhoto) => likedPhoto.id === photo.id
+      );
+
       const response = await fetch("http://localhost:3000/api/user/likePhoto", {
-        method: "POST",
+        method: isAlreadyLiked ? "DELETE" : "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -112,11 +116,11 @@ const WeatherSearch = () => {
       });
 
       if (response.ok) {
-        dispatch(
-          likedPhotos.some((likedPhoto) => likedPhoto.id === photo.id)
-            ? removeLikedPhoto(photo.id)
-            : addLikedPhoto(photo)
-        );
+        if (isAlreadyLiked) {
+          dispatch(removeLikedPhoto(photo.id));
+        } else {
+          dispatch(addLikedPhoto(photo));
+        }
       } else if (response.status === 401) {
         const errorData = await response.json();
         if (errorData.error === "Token expired.") {
@@ -140,8 +144,8 @@ const WeatherSearch = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="weather-search-container">
+      <form className="weather-form" onSubmit={handleSubmit}>
         <input
           type="text"
           value={city}
@@ -150,9 +154,12 @@ const WeatherSearch = () => {
         />
         <button type="submit">Search</button>
       </form>
+      <p>
+        Please enter the city name correctly. <br /> ex. LA ❌ LOS ANGELES ✅
+      </p>
       {error && <p>{error}</p>}
       {weatherData && (
-        <div>
+        <div className="weather-info">
           <h3>Weather in {weatherData.name}</h3>
           <p>{weatherData.weather[0].description}</p>
           <p>
@@ -169,16 +176,15 @@ const WeatherSearch = () => {
             <button onClick={() => handleCategoryChange("men")}>Men</button>
           </div>
           <div className="image-grid">
-            {filteredPhotos.map((photo, index) => (
+            {filteredPhotos.map((photo) => (
               <div
-                key={index}
+                key={photo.id}
                 className="image-item"
                 onClick={() => handlePhotoClick(photo)}
               >
                 <img
                   src={`http://localhost:3000${photo.url}`}
                   alt="weather related"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
                 <p>{photo.description}</p>
                 <button
@@ -192,7 +198,14 @@ const WeatherSearch = () => {
                     handleLike(photo);
                   }}
                 >
-                  ❤
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="like-icon"
+                  >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
                 </button>
               </div>
             ))}

@@ -88,7 +88,7 @@ function Account() {
         {error && <p>{error}</p>}
         {user && user.firstName && user.lastName && user.email ? (
           <div>
-            <h2>Account Details</h2>
+            <h2>ACCOUNT DETAILS</h2>
             <p>First Name: {user.firstName}</p>
             <p>Last Name: {user.lastName}</p>
             <p>Email: {user.email}</p>
@@ -97,7 +97,7 @@ function Account() {
           <p>No account details available</p>
         )}
         <div>
-          <h2>Liked Photos</h2>
+          <h2>LIKED</h2>
           {likedPhotos.length === 0 ? (
             <p>No liked photos</p>
           ) : (

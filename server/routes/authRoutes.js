@@ -51,4 +51,35 @@ router.post("/likePhoto", verifyToken, async (req, res) => {
   }
 });
 
+router.delete("/likePhoto", verifyToken, async (req, res) => {
+  try {
+    const { photoId } = req.body;
+    const userId = req.user.userId;
+
+    const like = await prisma.like.findUnique({
+      where: {
+        userId_photoId: {
+          userId,
+          photoId,
+        },
+      },
+    });
+
+    if (!like) {
+      return res.status(404).json({ error: "Like not found" });
+    }
+
+    await prisma.like.delete({
+      where: {
+        id: like.id,
+      },
+    });
+
+    res.status(200).json({ message: "Photo unliked successfully" });
+  } catch (error) {
+    console.error("Failed to unlike photo:", error);
+    res.status(500).json({ error: "Failed to unlike photo" });
+  }
+});
+
 module.exports = router;

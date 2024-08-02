@@ -1,81 +1,131 @@
+.weather-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 60px;
+}
+
+.weather-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.weather-form input {
+  padding: 10px;
+  font-size: 18px;
+  width: 300px;
+}
+
+.weather-form button {
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.weather-form button:hover {
+  background-color: #646464;
+}
+.weather-info {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.weather-info h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.weather-info p {
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.weather-info button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 5px 10px;
+}
+
 .image-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 30px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .image-item {
   position: relative;
   width: 100%;
-  padding-bottom: 100%;
+  height: 150px;
   overflow: hidden;
-  cursor: pointer;
-}
-
-.image-item img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.popup-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.popup img {
-  max-width: 100%;
-  height: auto;
 }
 
 .like-button {
   position: absolute;
   top: 10px;
-  right: 10px;
-  background: transparent;
+  right: 20px;
+  background: none;
   border: none;
-  color: white;
-  font-size: 24px;
   cursor: pointer;
-  outline: none;
+  color: #ff0000;
 }
 
-.like-button.liked {
-  color: red;
+.like-button.liked .like-icon {
+  fill: #ff0000;
 }
 
+.like-icon {
+  width: 30px;
+  height: 30px;
+  fill: #ffffff;
+}
+
+.popup,
 .login-prompt-popup {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
 }
 
+.popup-content,
 .login-prompt-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  max-width: 30%;
+  max-height: auto;
+  overflow: auto;
+}
+
+.popup-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.login-prompt-content button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
