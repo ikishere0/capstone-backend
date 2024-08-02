@@ -30,6 +30,14 @@ router.post("/upload", async (req, res) => {
       const minTempValue = parseFloat(minTemp);
       const maxTempValue = maxTemp ? parseFloat(maxTemp) : 1000;
 
+      console.log("Uploading photo with data:", {
+        description,
+        category,
+        minTemp: minTempValue,
+        maxTemp: maxTempValue,
+        url: `/uploads/${photoFile.name}`,
+      });
+
       try {
         const photo = await prisma.photo.create({
           data: {
@@ -41,10 +49,6 @@ router.post("/upload", async (req, res) => {
           },
         });
         console.log("Photo uploaded successfully:", photo);
-        console.log(
-          "Photo URL:",
-          `http://localhost:3000/uploads/${photoFile.name}`
-        );
         res.status(201).json(photo);
       } catch (dbError) {
         console.error("Database error:", dbError);

@@ -30,7 +30,12 @@ function Account() {
         if (response.ok) {
           dispatch(setAccount(data));
         } else {
-          throw new Error("Failed to fetch account data: " + data.message);
+          if (response.status === 401 && data.error === "Token expired.") {
+            alert("Session expired. Please log in again.");
+            navigate("/login");
+          } else {
+            throw new Error("Failed to fetch account data: " + data.message);
+          }
         }
       } catch (error) {
         setError(error.message);
@@ -60,14 +65,20 @@ function Account() {
         if (response.ok) {
           dispatch(setLikedPhotos(data));
         } else {
-          throw new Error("Failed to fetch liked photos: " + data.message);
+          if (response.status === 401 && data.error === "Token expired.") {
+            alert("Session expired. Please log in again.");
+            navigate("/login");
+          } else {
+            throw new Error("Failed to fetch liked photos: " + data.message);
+          }
         }
       } catch (error) {
         setError(error.message);
+        navigate("/login");
       }
     };
     fetchLikedPhotos();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleDeleteAccount = async () => {
     try {

@@ -13,7 +13,7 @@ const WeatherSearch = () => {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
-  const [isCelsius, setIsCelsius] = useState(false);
+  const [isCelsius, setIsCelsius] = useState(false); // 기본은 화씨로 설정
   const [photos, setPhotos] = useState([]);
   const [filteredPhotos, setFilteredPhotos] = useState([]);
   const [category, setCategory] = useState("all");
@@ -21,12 +21,12 @@ const WeatherSearch = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const convertToCelsius = (tempF) => ((tempF - 32) * 5) / 9;
-  const convertToFahrenheit = (tempC) => (tempC * 9) / 5 + 32;
 
   const getPhotos = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/photos");
       const data = await res.json();
+      console.log("Fetched photos:", data);
       setPhotos(data);
     } catch (err) {
       console.error("Failed to fetch photos:", err);
@@ -41,34 +41,38 @@ const WeatherSearch = () => {
     if (!weatherData) return;
 
     const filterPhotos = () => {
-      let tempC = weatherData.main.temp;
-      let tempF = convertToFahrenheit(tempC);
-      if (!isCelsius) {
-        tempF = weatherData.main.temp;
-        tempC = convertToCelsius(tempF);
-      }
+      let temp = weatherData.main.temp;
 
-      const filtered = photos.filter(
-        (photo) =>
-          (category === "all" ||
-            photo.category === category ||
-            photo.category === "all") &&
-          ((tempC >= photo.minTemp && tempC <= photo.maxTemp) ||
-            (tempF >= convertToFahrenheit(photo.minTemp) &&
-              tempF <= convertToFahrenheit(photo.maxTemp)))
-      );
+      console.log(`Current Temp: ${temp} F`);
 
+      const filtered = photos.filter((photo) => {
+        const minTemp = photo.minTemp;
+        const maxTemp = photo.maxTemp;
+
+        const isTempInRange = temp >= minTemp && temp <= maxTemp;
+        const isCategoryMatch =
+          category === "all" || photo.category === category;
+
+        console.log(
+          `Photo ID: ${photo.id}, Min Temp: ${minTemp}, Max Temp: ${maxTemp}, In Range: ${isTempInRange}, Category Match: ${isCategoryMatch}`
+        );
+
+        return isTempInRange && isCategoryMatch;
+      });
+
+      console.log("Filtered photos:", filtered);
       setFilteredPhotos(filtered);
     };
 
     filterPhotos();
-  }, [photos, category, weatherData, isCelsius]);
+  }, [photos, category, weatherData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     try {
       const data = await fetchWeather(city);
+      console.log("Fetched weather data:", data); // 날씨 데이터 확인
       setWeatherData(data);
     } catch (err) {
       setError(err.message);
@@ -98,7 +102,6 @@ const WeatherSearch = () => {
     }
     try {
       const token = sessionStorage.getItem("token");
-      console.log("Liking photo with id:", photo.id);
       const response = await fetch("http://localhost:3000/api/user/likePhoto", {
         method: "POST",
         headers: {
@@ -109,12 +112,20 @@ const WeatherSearch = () => {
       });
 
       if (response.ok) {
-        console.log("Photo liked successfully"); // 로그 추가
         dispatch(
           likedPhotos.some((likedPhoto) => likedPhoto.id === photo.id)
             ? removeLikedPhoto(photo.id)
             : addLikedPhoto(photo)
         );
+      } else if (response.status === 401) {
+        const errorData = await response.json();
+        if (errorData.error === "Token expired.") {
+          alert("Session expired. Please log in again.");
+          navigate("/login");
+        } else {
+          alert("Unauthorized access. Please log in.");
+          navigate("/login");
+        }
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to like photo");
@@ -147,7 +158,7 @@ const WeatherSearch = () => {
           <p>
             {isCelsius
               ? `${convertToCelsius(weatherData.main.temp).toFixed(2)}°C`
-              : `${weatherData.main.temp}°F`}
+              : `${weatherData.main.temp.toFixed(2)}°F`}
           </p>
           <button onClick={toggleTempUnit}>
             {isCelsius ? "Switch to Fahrenheit" : "Switch to Celsius"}
