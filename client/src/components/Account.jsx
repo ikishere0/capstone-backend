@@ -6,7 +6,7 @@ import { setLikedPhotos } from "../slices/likedPhotosSlice";
 
 function Account() {
   const dispatch = useDispatch();
-  const account = useSelector((state) => state.account);
+  const user = useSelector((state) => state.account.user);
   const likedPhotos = useSelector((state) => state.likedPhotos);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,6 +27,7 @@ function Account() {
           },
         });
         const data = await response.json();
+        console.log('API Response Data:', data);
         if (response.ok) {
           dispatch(setAccount(data));
         } else {
@@ -80,41 +81,20 @@ function Account() {
     fetchLikedPhotos();
   }, [dispatch, navigate]);
 
-  const handleDeleteAccount = async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      const response = await fetch(`${API_URL}/user/deleteAccount`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        sessionStorage.removeItem("token");
-        navigate("/login");
-      } else {
-        const data = await response.json();
-        setError(data.message || "Failed to delete account");
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
   return (
     <div className="account-container">
       <div className="account">
         {loading && <p>Loading...</p>}
         {error && <p>{error}</p>}
-        {account && (
+        {user && user.firstName && user.lastName && user.email ? (
           <div>
             <h2>Account Details</h2>
-            <p>First Name: {account.firstName}</p>
-            <p>Last Name: {account.lastName}</p>
-            <p>Email: {account.email}</p>
-            <button onClick={handleDeleteAccount}>Delete Account</button>
+            <p>First Name: {user.firstName}</p>
+            <p>Last Name: {user.lastName}</p>
+            <p>Email: {user.email}</p>
           </div>
+        ) : (
+          <p>No account details available</p>
         )}
         <div>
           <h2>Liked Photos</h2>

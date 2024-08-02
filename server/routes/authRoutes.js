@@ -3,7 +3,6 @@ const {
   register,
   login,
   getUserProfile,
-  deleteUser,
 } = require("../controllers/authController");
 const verifyToken = require("../middleware/authMiddleware");
 const { PrismaClient } = require("@prisma/client");
@@ -14,7 +13,6 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/login", login);
 router.get("/profile", verifyToken, getUserProfile);
-router.delete("/users/:id", verifyToken, deleteUser);
 
 router.get("/likedPhotos", verifyToken, async (req, res) => {
   try {

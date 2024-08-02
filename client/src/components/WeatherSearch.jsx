@@ -13,7 +13,7 @@ const WeatherSearch = () => {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
-  const [isCelsius, setIsCelsius] = useState(false); // 기본은 화씨로 설정
+  const [isCelsius, setIsCelsius] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [filteredPhotos, setFilteredPhotos] = useState([]);
   const [category, setCategory] = useState("all");
@@ -72,7 +72,7 @@ const WeatherSearch = () => {
     setError(null);
     try {
       const data = await fetchWeather(city);
-      console.log("Fetched weather data:", data); // 날씨 데이터 확인
+      console.log("Fetched weather data:", data);
       setWeatherData(data);
     } catch (err) {
       setError(err.message);
