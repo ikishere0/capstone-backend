@@ -113,3 +113,9 @@ main {
     -4px -4px 5px 0px rgba(111, 111, 111, 0.6), 7px 7px 20px 0px #0002,
     4px 4px 5px 0px #0001;
 }
+
+.home-paragrpah {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1rem;
+  padding: 100px;
+}

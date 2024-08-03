@@ -85,18 +85,19 @@ const AdminUpload = () => {
         onChange={(e) => setDescription(e.target.value)}
       />
       <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="all">All</option>
         <option value="women">Women</option>
         <option value="men">Men</option>
       </select>
       <input
         type="number"
-        placeholder="Min Temp (°C)"
+        placeholder="Min Temp (°F)"
         value={minTemp}
         onChange={(e) => setMinTemp(e.target.value)}
       />
       <input
         type="number"
-        placeholder="Max Temp (°C, leave blank for '28°C and above')"
+        placeholder="Max Temp (°F)"
         value={maxTemp}
         onChange={(e) => setMaxTemp(e.target.value)}
       />
@@ -112,7 +113,6 @@ const AdminUpload = () => {
               alt="weather related"
               style={{ width: "100%", height: "auto" }}
             />
-            <p>{photo.description}</p>
             <button
               className="delete-button"
               onClick={() => handleDelete(photo.id)}

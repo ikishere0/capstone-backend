@@ -84,7 +84,7 @@ function Account() {
   return (
     <div className="account-container">
       <div className="account">
-        {loading && <p>Loading...</p>}
+        {loading && <p>Loading... Please wait</p>}
         {error && <p>{error}</p>}
         {user && user.firstName && user.lastName && user.email ? (
           <div>
@@ -99,7 +99,7 @@ function Account() {
         <div>
           <h2>LIKED</h2>
           {likedPhotos.length === 0 ? (
-            <p>No liked photos</p>
+            <p>Search weather and like photos!</p>
           ) : (
             <div className="image-grid">
               {likedPhotos.map((photo) => (

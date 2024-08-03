@@ -83,45 +83,9 @@ const findUserWithToken = async (authorizationHeader) => {
   return user;
 };
 
-const destroyUser = async (userId) => {
-  let byeUser;
-  try {
-    byeUser = await prisma.user.delete({
-      where: {
-        id: userId,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-  return byeUser;
-};
-
-const alterUser = async ({ userId, firstName, lastName, password }) => {
-  try {
-    const saltRounds = 10;
-    const hashPassword = await bcrypt.hash(password, saltRounds);
-
-    const changedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        firstName: firstName,
-        lastName: lastName,
-        password: hashPassword,
-      },
-    });
-    return changedUser;
-  } catch (error) {
-    console.error("Error updating user:", error);
-    throw error;
-  }
-};
-
 module.exports = {
   registerQuery,
   loginQuery,
   getAllUser,
   findUserWithToken,
-  destroyUser,
-  alterUser,
 };

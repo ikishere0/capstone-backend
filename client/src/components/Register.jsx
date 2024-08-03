@@ -26,7 +26,7 @@ const RegisterForm = () => {
     e.preventDefault();
     try {
       await registerUser(formData);
-      setSuccessMessage("Registration successful!");
+      setSuccessMessage("Registration successed! Please login");
       setError("");
     } catch (error) {
       setError(error.response.data.message || "Registration failed");
