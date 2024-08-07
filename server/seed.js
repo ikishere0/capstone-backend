@@ -26,7 +26,7 @@ async function main() {
 
   const photo1 = await prisma.photo.create({
     data: {
-      url: "https://testphoto.com/summer1.jpg",
+      url: "https://images.unsplash.com/photo-1586024651909-8bd7e356c8fe?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       description: "summerclothing",
       category: "women",
       minTemp: 82.4,
@@ -36,11 +36,11 @@ async function main() {
 
   const photo2 = await prisma.photo.create({
     data: {
-      url: "https://testphoto.com/winter2.jpg",
-      description: "winterclothing",
-      category: "men",
-      minTemp: 40,
-      maxTemp: 48.1,
+      url: "https://images.unsplash.com/photo-1586024651909-8bd7e356c8fe?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      description: "summerclothing",
+      category: "women",
+      minTemp: 80,
+      maxTemp: 82.3,
     },
   });
 
