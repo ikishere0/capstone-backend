@@ -82,6 +82,21 @@ nav ul li a:hover {
   background-color: #1d1d1d43;
 }
 
+
+nav ul li.logout button {
+  background-color: white;
+  border: none;
+  padding: 15px 50px 30px;
+  cursor: pointer;
+  font-family: "Anton SC", sans-serif;
+  font-weight: 600;
+}
+
+nav ul li.logout button:hover {
+  background-color: #000000;
+  color:white;
+}
+
 main {
   background: #fff;
   padding: 20px;

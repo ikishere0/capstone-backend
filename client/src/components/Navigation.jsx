@@ -35,7 +35,7 @@ function Navigations() {
             </li>
           </>
         ) : (
-          <li>
+          <li className="logout">
             <button onClick={handleLogout}>Logout</button>
           </li>
         )}

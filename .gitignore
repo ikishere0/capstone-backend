@@ -3,4 +3,3 @@ package-lock.json
 DS_Store
 # Keep environment variables out of version control
 .env
-server/.DS_Store
